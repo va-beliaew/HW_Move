@@ -90,16 +90,35 @@ public:
 
 		big_int = v;
 	}
+	big_number(const big_number& c) {
+		big_int.clear();
+		for (int n : c.big_int) {
+			big_int.push_back(n);
+		}
+	}
+	big_number(big_number&& c) noexcept {
+		big_int = move(c.big_int);
+	}
 	big_number& operator= (std::vector<int> v) {
 		big_int = move(v);
 		return *this;
 	}
-	big_number operator= (big_number& c) {
+	big_number& operator= (const big_number& c) {
 		if (&c != this) {
-			big_int = move(c.big_int);
+			big_int.clear();
+			for (int n : c.big_int) {
+				big_int.push_back(n);
+			}
 		}
 		return *this;
 	}
+	big_number& operator= (big_number&& c) noexcept {
+		if (&c != this) {
+			big_int = move(c.big_int);
+			}
+		return *this;
+	}
+
 	big_number& operator+ (big_number& c) {
 		size_t size, size2;
 		int cash = 0;
